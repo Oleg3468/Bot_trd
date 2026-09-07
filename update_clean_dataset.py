@@ -23,7 +23,7 @@ else:
 
 new_rows = [
     r for r in all_rows
-    if r.get('closed_at', '') > CUTOFF and r['id'] not in existing_ids
+    if r['id'] not in existing_ids
 ]
 
 if new_rows:

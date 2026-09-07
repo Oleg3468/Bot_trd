@@ -391,5 +391,11 @@ class AutoTrader:
             if result["ok"]:
                 sess = get_current_session()
                 add_trade(symbol=signal.symbol, side=signal.side, entry=signal.entry, sl=signal.sl, tp=signal.tp, qty=r.qty, risk_pct=self.risk_pct, leverage=self.leverage, rr=signal.rr, mode="auto", order_id=result.get("orderId", ""), session=sess["name"])
+                try:
+                    from classifier_adapter import predict_and_log
+                    from sessions import get_current_session as _gcs
+                    predict_and_log(signal.symbol, signal.side, _gcs()["name"], signal.rr, signal.entry, signal.sl, signal.tp, order_id=result.get("orderId", ""))
+                except Exception as e:
+                    logger.warning(f"ML shadow predict failed: {e}")
             return result
         return await loop.run_in_executor(None, _execute_sync)

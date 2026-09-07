@@ -135,7 +135,7 @@ async def auto_trader_loop(app):
 
             await asyncio.sleep(SCAN_INTERVAL_SEC)
         except Exception as e:
-            logger.error(f"AutoTrader error: {e}")
+            logger.exception("AutoTrader error")
             await asyncio.sleep(60)
 
 async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):

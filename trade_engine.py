@@ -1,4 +1,5 @@
 from __future__ import annotations
+from time_offset_patch import apply_time_offset_patch
 
 import logging
 from typing import Optional
@@ -23,7 +24,9 @@ class BybitEngine:
                 demo=self.mode == "demo",
                 api_key=self.api_key,
                 api_secret=self.api_secret,
+                recv_window=20000,
             )
+            apply_time_offset_patch(self._client)
         except Exception as exc:
             logger.warning("Bybit client not initialized: %s", exc)
             self._client = None
