@@ -395,6 +395,13 @@ class AutoTrader:
                     from classifier_adapter import predict_and_log
                     from sessions import get_current_session as _gcs
                     predict_and_log(signal.symbol, signal.side, _gcs()["name"], signal.rr, signal.entry, signal.sl, signal.tp, order_id=result.get("orderId", ""))
+                    try:
+                        from indicators_shadow import log_indicators
+                        raw = eng.get_klines(signal.symbol, interval="15", limit=100)
+                        candles = [Candle(**c) for c in raw]
+                        log_indicators(signal.symbol, signal.side, candles, order_id=result.get("orderId", ""))
+                    except Exception as e:
+                        logger.warning(f"indicators shadow failed: {e}")
                 except Exception as e:
                     logger.warning(f"ML shadow predict failed: {e}")
             return result

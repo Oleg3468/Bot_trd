@@ -156,7 +156,7 @@ def main():
     # --- 5. Экспорт для будущего train_classifier.py ---
     out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "trades_audited.csv")
     fieldnames = ["id", "symbol", "side", "entry", "sl", "tp", "close_price",
-                  "pnl", "result", "rr", "realized_r", "session", "mode",
+                  "pnl", "result", "rr", "realized_r", "session", "mode", "order_id",
                   "opened_at", "closed_at"]
     with open(out_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")

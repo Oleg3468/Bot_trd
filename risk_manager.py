@@ -37,9 +37,9 @@ MAX_TRADES_DAY = 10
 MAX_LOSSES_DAY = 4
 
 SESSION_LIMITS = {
-    "Asia":     {"max_trades": 5, "max_losses": 2},
-    "London":   {"max_trades": 5, "max_losses": 2},
-    "New York": {"max_trades": 7, "max_losses": 3},
+    "Asia":     {"max_trades": 15, "max_losses": 5},
+    "London":   {"max_trades": 15, "max_losses": 5},
+    "New York": {"max_trades": 20, "max_losses": 7},
 }
 
 def get_current_session() -> str:
@@ -56,6 +56,7 @@ DEFAULT_DEPOSIT  = 1000.0
 DEFAULT_RISK_PCT = 1.0
 FIXED_MARGIN_USDT = 10.0
 SAFETY_MAX_LOSS_PCT = 15.0  # предохранитель: макс. убыток по сделке в % от депозита
+SAFETY_MAX_LOSS_USDT = 3.0  # фикс. потолок в $ для приближения к реальной торговле
 
 SYMBOL_PARAMS = {
     "BTCUSDT":  {"step": 0.001, "min": 0.001},
@@ -112,7 +113,7 @@ def calc_position_qty(symbol: str, entry: float, sl: float,
     if qty < min_qty:
         return 0.0
 
-    max_loss_usdt = deposit * (SAFETY_MAX_LOSS_PCT / 100)
+    max_loss_usdt = min(deposit * (SAFETY_MAX_LOSS_PCT / 100), SAFETY_MAX_LOSS_USDT)
     potential_loss = qty * sl_dist
     if potential_loss > max_loss_usdt:
         safe_qty_raw = max_loss_usdt / sl_dist
