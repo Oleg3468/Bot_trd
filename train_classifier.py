@@ -61,7 +61,7 @@ def train_model(X, y):
     val_data = lgb.Dataset(X_test, label=y_test, reference=train_data)
 
     params = {
-        "objective": "binary", "metric": "auc", "boosting_type": "gbdt",
+        "objective": "binary", "metric": "auc", "boosting_type": "gbdt", "is_unbalance": True,
         "num_leaves": 15, "learning_rate": 0.05, "feature_fraction": 0.8,
         "bagging_fraction": 0.8, "bagging_freq": 5, "verbose": -1, "min_data_in_leaf": 10,
     }
